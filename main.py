@@ -16,14 +16,14 @@ def save_webcam_image():
     while True:
         # 現在の時間を取得
         current_time = time.time()
+        
+        # カメラから画像を取得
+        ret, frame = cap.read()
 
-        # 時間経過したかを確認し、経過していれば画像を保存
-        if current_time - last_save_time >= dt:
+        if ret:
+            # 時間経過したかを確認し、経過していれば画像を保存
+            if current_time - last_save_time >= dt:
 
-            # カメラから画像を取得
-            ret, frame = cap.read()
-
-            if ret:
                 # 保存用のファイル名を作成
                 current_time_str = time.strftime("%Y%m%d%H%M%S")
                 filename = os.path.join('captured', f'{current_time_str}.jpg')
@@ -34,9 +34,9 @@ def save_webcam_image():
 
                 # 前回の保存時間を更新
                 last_save_time = current_time
-            else:
-                print("Error: Failed to capture image.")
-                break
+        else:
+            print("Error: Failed to capture image.")
+            break
         
         time.sleep(dt/10)
         
